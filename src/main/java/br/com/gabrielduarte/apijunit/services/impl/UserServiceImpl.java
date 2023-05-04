@@ -1,5 +1,6 @@
 package br.com.gabrielduarte.apijunit.services.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,5 +21,9 @@ public class UserServiceImpl implements UserService {
 	public Person findById(Integer id) {
 		Optional<Person> obj = repository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
+	}
+	
+	public List<Person> findAll() {
+		return repository.findAll();
 	}
 }
