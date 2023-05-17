@@ -11,6 +11,7 @@ import br.com.gabrielduarte.apijunit.domain.Person;
 import br.com.gabrielduarte.apijunit.domain.dto.UserDTO;
 import br.com.gabrielduarte.apijunit.repositories.UserRepository;
 import br.com.gabrielduarte.apijunit.services.UserService;
+import br.com.gabrielduarte.apijunit.services.exceptions.DataIntegrityViolationException;
 import br.com.gabrielduarte.apijunit.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -34,6 +35,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Person create(UserDTO obj) {
+		findByEmail(obj);
 		return repository.save(mapper.map(obj, Person.class));
+	}
+	
+	private void findByEmail(UserDTO obj) {
+		Optional<Person> user = repository.findByEmail(obj.getEmail());
+		if (user.isPresent()) {
+			throw new DataIntegrityViolationException("E-mail já cadastrado no sistema");
+		}
 	}
 }
