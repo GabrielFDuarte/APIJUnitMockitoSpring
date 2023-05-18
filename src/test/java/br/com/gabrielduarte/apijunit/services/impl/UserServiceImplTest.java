@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -24,6 +25,7 @@ import br.com.gabrielduarte.apijunit.services.exceptions.ObjectNotFoundException
 @SpringBootTest
 class UserServiceImplTest {
 	
+	private static final int INDEX = 0;
 	private static final String OBJETO_NAO_ENCONTRADO = "Objeto não encontrado";
 	private static final String PASSWORD = "123teste";
 	private static final String EMAIL = "gabrielteste@email.com";
@@ -75,8 +77,18 @@ class UserServiceImplTest {
 	}
 
 	@Test
-	void testFindAll() {
-		fail("Not yet implemented");
+	void whenFindAllThenReturnAListOfUsers() {
+		when(repository.findAll()).thenReturn(List.of(user));
+		
+		List<Person> response = service.findAll();
+		
+		assertNotNull(response);
+		assertEquals(1, response.size());
+		assertEquals(Person.class, response.get(INDEX).getClass());
+		assertEquals(ID, response.get(INDEX).getId());
+		assertEquals(NAME, response.get(INDEX).getName());
+		assertEquals(EMAIL, response.get(INDEX).getEmail());
+		assertEquals(PASSWORD, response.get(INDEX).getPassword());
 	}
 
 	@Test
