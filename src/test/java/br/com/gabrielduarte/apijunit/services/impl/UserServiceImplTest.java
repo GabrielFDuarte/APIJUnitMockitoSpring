@@ -24,6 +24,7 @@ import br.com.gabrielduarte.apijunit.services.exceptions.ObjectNotFoundException
 @SpringBootTest
 class UserServiceImplTest {
 	
+	private static final String OBJETO_NAO_ENCONTRADO = "Objeto não encontrado";
 	private static final String PASSWORD = "123teste";
 	private static final String EMAIL = "gabrielteste@email.com";
 	private static final String NAME = "Gabriel Teste";
@@ -63,13 +64,13 @@ class UserServiceImplTest {
 	
 	@Test
 	void whenFindByIdThenReturnAnObjectNotFoundException() {
-		when(repository.findById(anyInt())).thenThrow(new ObjectNotFoundException("Objeto não encontrado"));
+		when(repository.findById(anyInt())).thenThrow(new ObjectNotFoundException(OBJETO_NAO_ENCONTRADO));
 		
 		try {
 			service.findById(ID);
 		} catch (Exception ex) {
 			assertEquals(ObjectNotFoundException.class, ex.getClass());
-			assertEquals("Objeto não encontrado", ex.getMessage());
+			assertEquals(OBJETO_NAO_ENCONTRADO, ex.getMessage());
 		}
 	}
 
